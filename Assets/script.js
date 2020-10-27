@@ -1,111 +1,36 @@
-const APIKey = "fa2f3597f83a06c3c808a388a5613793";
-let searchCityList = JSON.parse(localStorage.getItem("searchCityList")) || [];
+//Register and get the openWeather APIKey
+
+/*On page load*/
+//1. Display the weather details of the last searched city
+    //1A Retrieve the searched history list from local storage
+
+    //1B Grab the last searched city from the list
+
+    //1C Send an ajax call to get the current and forecast weather data for that city using 'APIKey' and 'city' parameters
+
+    //1D Populate the searched history list on the UI by dynamically generating the table-list
+
+    //1E Display the received weather response data on the UI
+            // Map the keys of the required data from the response to the appropriate HTML element for current and forecast weather
+            // Include the logic to color code the UV index based on value
+            // Create a loop to display the 5-day forecast weather
 
 
+/*On search button click or when user clicks a city name from teh search history list*/
+//2. Add eventListener to the search button when clicked, to display the corresponsing weather details for the user searched city
 
-$('#searchBtn').on("click", function(event){
-    event.preventDefault();
-    const searchedCity = $('#inputSearch').val().trim();
-    console.log (searchedCity);
-    if(searchedCity === ""){
-        return;
-    } 
+    //2A Grab the value of the user entered city name input
     
-    // const cityExistsCheck = function(){
-    //     isPresent = false;
-    //     for(let i=0; i<searchCityList.length; i++){
-    //         console.log(searchCityList[i], ((searchCityList.length)-(i+1)));
-    //         console.log(searchCityList[i][(searchCityList.length)-(i+1)]);
-    //         if (searchedCity === (searchCityList[i][(searchCityList.length)-1])){
-    //             isPresent = true;
-    //         }  
-    //     }
-    //     return isPresent;
-    // }
-    // console.log(cityExistsCheck());
+    //2B Send an ajax call to get the current and forecast weather data for that city using 'APIKey' and 'city' parameters
 
-    
-    // const cityExistsCheck = function(){
-    //     isPresent = false;
-    //     for(let i=0; i<searchCityList.length; i++){
-    //         //console.log(searchCityList[i], ((searchCityList.length)-(i+1)));
-    //         //console.log(searchCityList[i][(searchCityList.length)-(i+1)]);
-    //         if (searchedCity === (searchCityList[i])){
-    //             isPresent = true;
-    //         }  
-    //     }
-    //     return isPresent;
-    // }
+    //2C Add the city to the searched history list in the local storage. Validate if it already exists and logic to handle accordingly
 
-    // const cityExists = cityExistsCheck();
+    //2D Add the city to the searched history list on the UI 
 
-    // if(cityExists === true){
-        
-    // } 
-    
-    searchCityList =  searchCityList.filter(function(currentCity){
-        return (searchedCity !== currentCity);
-    })
-
-      
-
-    
-    searchCityList.unshift(searchedCity);
-    localStorage.setItem("searchCityList", JSON.stringify(searchCityList));
-    $('.list-group').empty();
-    for(let i=0; i<searchCityList.length; i++){
-        const searchListBtn = $('<button>').addClass("list-group-item list-group-item-action");
-        searchListBtn.text(searchCityList[i]);
-        $('.list-group').append(searchListBtn);
-    }
-    
+    //2E Display the ajax response data received for current and forecast weather on the UI
+            // Map the keys of the required data from the response to the appropriate HTML element for current and forecast weather
+            // Include the logic to color code the UV index based on value
+            // Create a loop to display the 5-day forecast weather
 
 
-
- 
-
-    let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + APIKey + "&units=imperial";
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function(response) {
-        console.log(response);
-        const icon = $('<img>');
-        icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
-        $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
-        $('.cityName').append(icon);
-        const temp = $('.temp').text("Temperature: " + response.main.temp + " °F");
-        const humidity = $('.humidity').text("Humidity: " + response.main.humidity + " %");
-        const wind = $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
-        queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function(UVData) {
-            console.log(UVData);
-            $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
-            const UVIndex = $('#UVIndex');
-            if (UVIndex.text()<=2){
-                UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
-            } else if (UVIndex.text()>7){
-                UVIndex.attr("style", "background-color:red");
-            } else{
-                UVIndex.attr("style", "background-color:yellow");
-                console.log(UVIndex.text());
-            }
-        });
-        // UVIndex.css({"backgroundColor":"yellow"})
-      
-    })
-    queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&appid=" + APIKey;
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function(forecastData) {
-    console.log(forecastData);
-    // for(let i=6; i<forecastData.list.length; i+8;){
-
-    // }
-
-    })
-});
+/* Since almost the entire code is repeated on page load and when user clicks on button, code refactoring will be done at the end.*/
