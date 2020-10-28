@@ -4,9 +4,22 @@
     margin: 0;
 }
 
+/* header styled as required*/
 header{
     height: 60px;
     background-color: black;
     color: white;
+    border-radius: 0;
+    margin: 20px auto;
+}
+
+.search{
+    background-color: rgb(245, 245, 245);
+}
+
+/*borders the current weather conditions display section*/
+.currentWeather{
+    border: 1px solid lightgrey;
+    border-radius: 1%;
 }
 
