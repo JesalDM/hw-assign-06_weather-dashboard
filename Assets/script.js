@@ -82,7 +82,10 @@ $('#searchBtn').on("click", function(event){
         for(let i=6; i<forecastData.list.length; i=i+8){
         // creates a div to hold each future day's weather data and appends it to the forecast weather section
         const forecastDay = $('<div>');
-        $('.futureWeather').append(forecastDay);
+        // adds classes to the div for layout, styling and spacing
+        forecastDay.addClass("col-2 blue-box m-2 p-2");
+        // appends each div to its parent div that holds all the 5-day forecast divs
+        $('.displayForecast').append(forecastDay);
         // craetes h6 tag for the date
         const date = $('<h6>');
         // maps the date from the forecast API response, converts it to the desired format using moment.js and displays it on UI

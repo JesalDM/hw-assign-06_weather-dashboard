@@ -32,3 +32,14 @@ header{
     padding: 5px;
     border-radius: 5%;
 }
+
+/* styled the forecast divs as required*/
+.blue-box{
+    background-color: rgb(52, 120, 255);
+    color: white;
+    border-radius:5%;
+}
+
+p{
+    font-size:12px;
+}
