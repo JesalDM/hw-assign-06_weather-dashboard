@@ -23,3 +23,8 @@ header{
     border-radius: 1%;
 }
 
+/* changes the h3 display to inline to allow the icon to be displayed in the same line alongside city name and date*/
+#cityDate{
+    display:inline;
+}
+
