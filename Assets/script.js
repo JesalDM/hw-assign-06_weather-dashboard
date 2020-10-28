@@ -37,8 +37,7 @@ $('#searchBtn').on("click", function(event){
 
     //2D Add the city to the searched history list on the UI 
 
-    //2E Display the ajax response data received for current and forecast weather on the UI
-        // Map the keys of the required data from the response to the appropriate HTML element for current and forecast weather
+    //2E Map the keys of the required data from the response received to the appropriate HTML element for current and forecast weather and display it on the UI
         
         // creates an image tag for the icon
         const icon = $('<img>');
@@ -53,29 +52,64 @@ $('#searchBtn').on("click", function(event){
         $('.humidity').text("Humidity: " + response.main.humidity + " %");
         $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
 
-            // Send another ajax request call to get the UVIndex using the latitude and longitude parameters from the previous response and API key
-            queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
-            $.ajax({
-                url: queryURL,
-                method: "GET"
-            }).then(function(UVData) {
-                console.log(UVData);
-                // maps the UV Index value to its appropriate div and displays it on UI
-                $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
-                const UVIndex = $('#UVIndex');
-                // Logic to color code the UV index based on value
-                if (UVIndex.text()<=2){
-                    UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
-                } else if (UVIndex.text()>7){
-                    UVIndex.attr("style", "background-color:red");
-                } else{
-                    UVIndex.attr("style", "background-color:yellow");  
-                }
-            });
+        // Send another ajax request call to get the UVIndex using the latitude and longitude parameters from the previous response and API key
+        queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).then(function(UVData) {
+            // maps the UV Index value to its appropriate div and displays it on UI
+            $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
+            const UVIndex = $('#UVIndex');
+            // Logic to color code the UV index based on value
+            if (UVIndex.text()<=2){
+                UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
+            } else if (UVIndex.text()>7){
+                UVIndex.attr("style", "background-color:red");
+            } else{
+                UVIndex.attr("style", "background-color:yellow");  
+            }
+        });
     });
 
-            // Send 3rd ajax request call for future weather data
-            // Create a loop to display the 5-day forecast weather
+    // Sends 3rd ajax request call for future weather data, using the searched city and API key as parameters
+    queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&appid=" + APIKey + "&units=imperial";
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(forecastData) {
+        // Create a loop to display the 5-day forecast weather. Since the response received provides data for every 3 hours, this loops through and maps every 8th element in the array
+        for(let i=6; i<forecastData.list.length; i=i+8){
+        // creates a div to hold each future day's weather data and appends it to the forecast weather section
+        const forecastDay = $('<div>');
+        $('.futureWeather').append(forecastDay);
+        // craetes h6 tag for the date
+        const date = $('<h6>');
+        // maps the date from the forecast API response, converts it to the desired format using moment.js and displays it on UI
+        date.text(moment((forecastData.list[i].dt_txt), "YYYY-MM-DD hh:mm:ss").format('MM/DD/YYYY'));
+        // appends the date to the div
+        forecastDay.append(date);
+        // creates an img tag for the icon
+        const icon = $('<img>');
+        // adds the src attribute to the img tag using open weather specified format to get icon URL
+        icon.attr("src", "http://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + ".png") 
+        // appends the img tag to the div
+        forecastDay.append(icon);
+        // creates a p tag for temperature
+        const temp = $('<p>');
+        // maps the temperature value from response and displays it on UI
+        temp.text("Temp: " + forecastData.list[i].main.temp + " °F");
+        // appends the p tag to the div
+        forecastDay.append(temp);
+        // creates a p tag for humidity
+        const humidity = $('<p>');
+        // maps the humidity value from response and displays it on UI
+        humidity.text("Humidity: " + forecastData.list[i].main.humidity + "%");
+        // appends the p tag to the div
+        forecastDay.append(humidity);
+    
+        };
+    });        
 });
 
 /* Since almost the entire code is repeated on page load and when user clicks on button, code refactoring will be done at the end.*/
