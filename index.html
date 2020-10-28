@@ -25,26 +25,52 @@
 <body>
 
     <!-- Container -->
- 
+    <div class= "container">
         <!-- Header row div-->
-         
-        <!--Main section--> 
-            <!--Left section-->
-                <!--Div for Search label, input box and button-->
-   
-               
-                 <!--Div for Search History-->
+        <div class="row">  
+            <header class="col-12">
+                <h2>Weather Dashboard</h2>
+            </header>
+        </div> 
+        <!-- Content row div-->
+        <div class="row content">
+            <!--Left panel Search section-->
+            <div class ="search col-4">
+                <label for="inputSearch"><h5>Search for a City: </h5></label>
+                <!--Used Bootstrap component for search input box and search button as input group-->
+                <div class="input-group mb-3 col-10">
+                    <input type="text" class="form-control pl-1" id="inputSearch" name="city">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button" id="searchBtn">Button</i></button>
+                    </div>
+                </div>
+                <!--div for displaying the search history list-->
+                <div class="searchHistory col-12">
+                    <div class="list-group">
+                       
+                    </div>
+                </div>
+            </div>
           
-          
-            <!-- Right section -->
+            <!--Main section for displaying the weather conditions of the searched city-->
+            <div class="weather col-8">
+                <!--section for displaying the current weather conditions-->
+                <div class = "currentWeather">
+                    <div class="cityName"></div>
+                    <div class="temp"></div>
+                    <div class="humidity"></div>
+                    <div class="wind"></div>
+                    <div class="UVIndex"></div> 
+                </div>
+                <!--section for displaying the 5-day forecast weather conditions-->
+                <div class = "futureWeather">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+  
 
-                <!--Div for current weather-->
-        
-                <!--Div for forecast-->
-       
-
-
-   
     <!-- Linking javascript -->
     <script type="text/javascript" src=./Assets/script.js></script>
 </body>
