@@ -31,31 +31,50 @@ $('#searchBtn').on("click", function(event){
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response); 
+    
 
     //2C Add the city to the searched history list in the local storage. Validate if it already exists and logic to handle accordingly
 
     //2D Add the city to the searched history list on the UI 
 
     //2E Display the ajax response data received for current and forecast weather on the UI
-            // Map the keys of the required data from the response to the appropriate HTML element for current and forecast weather
-            
-            // creates an image tag for the icon
-            const icon = $('<img>');
-            // adds the src attribute to the img tag using open weather specified format to get icon URL
-            icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
-            // concatenates the city name from the response and current date using moment.js
-            $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
-            // appends the icon to the h3 tag alongside city name and date
-            $('.cityName').append(icon);
-            // maps the temperature, humidity and wind speed from the response and displays it on the UI
-            $('.temp').text("Temperature: " + response.main.temp + " °F");
-            $('.humidity').text("Humidity: " + response.main.humidity + " %");
-            $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
+        // Map the keys of the required data from the response to the appropriate HTML element for current and forecast weather
+        
+        // creates an image tag for the icon
+        const icon = $('<img>');
+        // adds the src attribute to the img tag using open weather specified format to get icon URL
+        icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
+        // concatenates the city name from the response and current date using moment.js
+        $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
+        // appends the icon to the h3 tag alongside city name and date
+        $('.cityName').append(icon);
+        // maps the temperature, humidity and wind speed from the response and displays it on the UI
+        $('.temp').text("Temperature: " + response.main.temp + " °F");
+        $('.humidity').text("Humidity: " + response.main.humidity + " %");
+        $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
+
+            // Send another ajax request call to get the UVIndex using the latitude and longitude parameters from the previous response and API key
+            queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function(UVData) {
+                console.log(UVData);
+                // maps the UV Index value to its appropriate div and displays it on UI
+                $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
+                const UVIndex = $('#UVIndex');
+                // Logic to color code the UV index based on value
+                if (UVIndex.text()<=2){
+                    UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
+                } else if (UVIndex.text()>7){
+                    UVIndex.attr("style", "background-color:red");
+                } else{
+                    UVIndex.attr("style", "background-color:yellow");  
+                }
+            });
     });
 
-            // Send another ajax request call to get the UVIndex
-            // Include the logic to color code the UV index based on value
+            // Send 3rd ajax request call for future weather data
             // Create a loop to display the 5-day forecast weather
 });
 
