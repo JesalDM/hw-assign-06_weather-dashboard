@@ -1,11 +1,11 @@
 //Register and get the openWeather APIKey
-
 const APIKey = "fa2f3597f83a06c3c808a388a5613793";
+
 
 /*On page load*/
 //1. Display the weather details of the last searched city
     //1A Retrieve the searched history list from local storage
-
+let searchCityList = JSON.parse(localStorage.getItem("searchCityList")) || [];
     //1B Grab the last searched city from the list
 
     //1C Send an ajax call to get the current and forecast weather data for that city using 'APIKey' and 'city' parameters
@@ -24,7 +24,10 @@ $('#searchBtn').on("click", function(event){
     event.preventDefault();
     //2A Grabs the value of the user entered city name input
     const searchedCity = $('#inputSearch').val().trim();
-    
+    // stops executing the function further if user clicks on search button without entering any value
+    if(searchedCity === ""){
+        return;
+    }
     //2B Send an ajax request call to get the current and forecast weather data for that city using 'APIKey' and 'city' parameters
     let queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + searchedCity + "&appid=" + APIKey + "&units=imperial";
     $.ajax({
@@ -33,44 +36,54 @@ $('#searchBtn').on("click", function(event){
     }).then(function(response) {
     
 
-    //2C Add the city to the searched history list in the local storage. Validate if it already exists and logic to handle accordingly
+    //2C Adds the city to the searched history list in the local storage after validating if it already exists and handles accordingly.
+    searchCityList =  searchCityList.filter(function(currentCity){
+        return (searchedCity !== currentCity);
+    })    
+    searchCityList.unshift(searchedCity);
+    localStorage.setItem("searchCityList", JSON.stringify(searchCityList));
 
-    //2D Add the city to the searched history list on the UI 
-
+    //2D Adds the city to the searched history list on the UI 
+    $('.list-group').empty();
+    for(let i=0; i<searchCityList.length; i++){
+        const searchListBtn = $('<button>').addClass("list-group-item list-group-item-action");
+        searchListBtn.text(searchCityList[i]);
+        $('.list-group').append(searchListBtn);
+    };
     //2E Map the keys of the required data from the response received to the appropriate HTML element for current and forecast weather and display it on the UI
         
-        // creates an image tag for the icon
-        const icon = $('<img>');
-        // adds the src attribute to the img tag using open weather specified format to get icon URL
-        icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
-        // concatenates the city name from the response and current date using moment.js
-        $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
-        // appends the icon to the h3 tag alongside city name and date
-        $('.cityName').append(icon);
-        // maps the temperature, humidity and wind speed from the response and displays it on the UI
-        $('.temp').text("Temperature: " + response.main.temp + " °F");
-        $('.humidity').text("Humidity: " + response.main.humidity + " %");
-        $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
+    // creates an image tag for the icon
+    const icon = $('<img>');
+    // adds the src attribute to the img tag using open weather specified format to get icon URL
+    icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
+    // concatenates the city name from the response and current date using moment.js
+    $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
+    // appends the icon to the h3 tag alongside city name and date
+    $('.cityName').append(icon);
+    // maps the temperature, humidity and wind speed from the response and displays it on the UI
+    $('.temp').text("Temperature: " + response.main.temp + " °F");
+    $('.humidity').text("Humidity: " + response.main.humidity + " %");
+    $('.wind').text("Wind Speed: " + response.wind.speed + " MPH");
 
-        // Send another ajax request call to get the UVIndex using the latitude and longitude parameters from the previous response and API key
-        queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
-        $.ajax({
-            url: queryURL,
-            method: "GET"
-        }).then(function(UVData) {
-            // maps the UV Index value to its appropriate div and displays it on UI
-            $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
-            const UVIndex = $('#UVIndex');
-            // Logic to color code the UV index based on value
-            if (UVIndex.text()<=2){
-                UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
-            } else if (UVIndex.text()>7){
-                UVIndex.attr("style", "background-color:red");
-            } else{
-                UVIndex.attr("style", "background-color:yellow");  
-            }
-        });
+    // Send another ajax request call to get the UVIndex using the latitude and longitude parameters from the previous response and API key
+    queryURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&appid=" + APIKey;
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(UVData) {
+        // maps the UV Index value to its appropriate div and displays it on UI
+        $('.UVIndex').html("UV Index: <span id='UVIndex'>" + UVData.value + "</span>") ;
+        const UVIndex = $('#UVIndex');
+        // Logic to color code the UV index based on value
+        if (UVIndex.text()<=2){
+            UVIndex.attr("style", "background-color: rgb(31, 191, 29)");
+        } else if (UVIndex.text()>7){
+            UVIndex.attr("style", "background-color:red");
+        } else{
+            UVIndex.attr("style", "background-color:yellow");  
+        }
     });
+});
 
     // Sends 3rd ajax request call for future weather data, using the searched city and API key as parameters
     queryURL = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchedCity + "&appid=" + APIKey + "&units=imperial";
