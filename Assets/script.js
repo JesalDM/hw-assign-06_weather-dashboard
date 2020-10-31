@@ -68,7 +68,8 @@ $(document).ready(function(){
             // creates an image tag for the icon
             const icon = $('<img>');
             // adds the src attribute to the img tag using open weather specified format to get icon URL
-            icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")   
+            icon.attr("src", "http://openweathermap.org/img/wn/" + response.weather[0].icon + ".png")
+            icon.attr("alt", "weather condition icon");   
             // concatenates the city name from the response and current date using moment.js
             $('.cityName').html("<h3 id='cityDate'>" + response.name + " (" + moment().format('L') + ") " + "</h3>");
             // appends the icon to the h3 tag alongside city name and date
@@ -122,7 +123,8 @@ $(document).ready(function(){
                 // creates an img tag for the icon
                 const icon = $('<img>');
                 // adds the src attribute to the img tag using open weather specified format to get icon URL
-                icon.attr("src", "http://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + ".png") 
+                icon.attr("src", "http://openweathermap.org/img/wn/" + forecastData.list[i].weather[0].icon + ".png")
+                icon.attr("alt", "forecast weather condition icon"); 
                 // appends the img tag to the div
                 forecastDay.append(icon);
                 // creates a p tag for temperature

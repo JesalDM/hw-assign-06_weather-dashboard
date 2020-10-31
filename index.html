@@ -35,8 +35,8 @@
         <!-- Content row div-->
         <div class="row content">
             <!--Left panel Search section-->
-            <div class ="search col-4 pb-3">
-                <label for="inputSearch"><h5 class="mx-3 my-2">Search for a City: </h5></label>
+            <aside class ="search col-4 pb-3">
+                <h5 class="mx-3 my-2"><label for="inputSearch">Search for a City:</label></h5>
                 <!--Used Bootstrap component for search input box and search button as input group-->
                 <div class="input-group mb-3 col-10">
                     <input type="text" class="form-control pl-2" id="inputSearch" name="city">
@@ -51,10 +51,10 @@
                        
                     </div>
                 </div>
-            </div>
+            </aside>
           
             <!--Main section for displaying the weather conditions of the searched city-->
-            <div class="weather col-8">
+            <main class="weather col-8">
                 <!--section for displaying the current weather conditions-->
                 <!--used Bootstrap's responsive margin and padding utility classes-->
                 <div class = "currentWeather mb-3 ml-3 px-3 pb-3">
@@ -70,12 +70,12 @@
                     <!--div to hold all the 5-day forecast divs-->
                     <div class="displayForecast d-flex"></div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
   
 
     <!-- Linking javascript -->
-    <script type="text/javascript" src=./Assets/script.js></script>
+    <script src=./Assets/script.js></script>
 </body>
 </html>
