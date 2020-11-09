@@ -1,5 +1,5 @@
-# hw-assign-06_weather-dashboard
-Homework Assignment 06 - Weather Dashboard
+# weather-dashboard
+A weather application that shows the current and 5-day forecast weather for a location, built primarily using AJAX
 
 ## User Story
 
@@ -60,7 +60,7 @@ This application is a weather dashboard that has the following features:
 
 ## For Review
 
-* Deployed Application URL: https://jesaldm.github.io/hw-assign-06_weather-dashboard/.
-* Github Repository URL: https://github.com/JesalDM/hw-assign-06_weather-dashboard
+* Deployed Application URL:  https://jesaldm.github.io/weather-dashboard/.
+* Github Repository URL: https://github.com/JesalDM/weather-dashboard/
 * Application functionality demo: ![Demo](./Assets/Weather-Dashboard.gif)
 * Screenshots : ![Screenshot](./Assets/Weather-Dashboard.png)
