@@ -40,6 +40,10 @@ This application is a weather dashboard that has the following features:
  - The future weather condition section displays the 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, and the humidity.
  - The user can also view the search history list of all the past cities that have been searched for. Clicking on any of the city within the list will also display the weather conditions alongside.
 
+## Technologies used
+- HTML, CSS, Javascript, JQuery, Ajax, Moment.js, client-side storage
+
+
 ## Application Development
 
 - The application uses the [OpenWeather API](https://openweathermap.org/api) third-party API to retrieve weather data for cities. 
