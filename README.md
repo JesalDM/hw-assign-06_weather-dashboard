@@ -43,7 +43,6 @@ This application is a weather dashboard that has the following features:
 ## Technologies used
 - HTML, CSS, Javascript, JQuery, Ajax, Moment.js, client-side storage
 
-
 ## Application Development
 
 - The application uses the [OpenWeather API](https://openweathermap.org/api) third-party API to retrieve weather data for cities. 
@@ -61,6 +60,11 @@ This application is a weather dashboard that has the following features:
 - Used semantic HTML for search engine optimization and accessibility, wherever possible.
 - Used the W3C MarkUp Validation service (https://validator.w3.org/) to validate the HTML file and no errors were reported.
 
+## License
+This project is licensed under the terms of the MIT license.
+
+## Contributors
+This website is individually developed by Jesal Mehta (Github profile- https://github.com/JesalDM/)
 
 ## For Review
 
